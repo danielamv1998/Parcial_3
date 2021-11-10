@@ -17,6 +17,8 @@ class Cama {
     this.diagnostico,
   });
 
+  Cama.newCama();
+
   factory Cama.fromJson(Map<String, dynamic> json) => Cama(
         idCama: json["idCama"],
         estado: json["estado"],
