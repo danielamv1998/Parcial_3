@@ -1,19 +1,34 @@
 import 'api_service.dart';
 import 'package:flutter/material.dart';
 import 'cama.dart';
+import 'detalles.dart';
 
 // ignore: must_be_immutable
-class CamaListView extends StatelessWidget {
+class CamaListView extends StatefulWidget {
+  @override
+  _CamaListViewState createState() => _CamaListViewState();
+}
+
+class _CamaListViewState extends State<CamaListView> {
   ApiService apiService = ApiService();
 
-  refreshState() {
-    CamaListView();
+  actualizar() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     ListTile _tile(int idCama, int estado, int idPiso, String idPaciente,
         String nombre, String fechaHoraIngreso, String diagnostico) {
+      Cama cama = Cama(
+        idCama: idCama,
+        estado: estado,
+        idPiso: idPiso,
+        idPaciente: idPaciente,
+        nombre: nombre,
+        fechaIngreso: fechaHoraIngreso,
+        diagnostico: diagnostico,
+      );
       return ListTile(
         title: Text(
           estado == 0 ? 'Cama $idCama libre' : 'Cama $idCama ocupada',
@@ -25,7 +40,14 @@ class CamaListView extends StatelessWidget {
           color: estado == 0 ? Colors.green : Colors.red,
         ),
         isThreeLine: true,
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetalleCama(cama),
+            ),
+          ).then((value) => actualizar());
+        },
       );
     }
 

@@ -56,8 +56,6 @@ class ApiService {
       "diagnostico": cama.diagnostico,
     };
 
-    print(jsonEncode(data));
-
     final response = await http.post(
       Uri.parse(url),
       headers: {
@@ -67,8 +65,6 @@ class ApiService {
       body: jsonEncode(data),
     );
 
-    print('STATUS CODE: ${response.statusCode}');
-    print('BODY: \n${response.body}');
     if (response.statusCode == 201)
       print('xd');
     //return Cama.fromJson(json.decode(response.body));
@@ -77,6 +73,39 @@ class ApiService {
   }
 
   // PUT FUNCTION
+  Future<void> putCama(int? id, Cama? cama) async {
+    Map data = {
+      "idCama": id,
+      "estado": cama?.estado,
+      "idPiso": cama?.idPiso,
+      "idPaciente": cama?.idPaciente,
+      "nombre": cama?.nombre,
+      "fechaHoraIngreso": cama?.fechaIngreso,
+      "diagnostico": cama?.diagnostico,
+    };
+
+    final response = await http.put(
+      Uri.parse(url + '/$id'),
+      headers: {
+        //"Accept": "text/plain",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode != 204) throw Exception('No se, ta mal');
+  }
 
   // DELETE FUNCTION
+  Future<void> deleteCama(int? id) async {
+    final response = await http.delete(
+      Uri.parse(url + '/$id'),
+      headers: {
+        //"Accept": "text/plain",
+        "Content-Type": "application/json",
+      },
+    );
+
+    if (response.statusCode != 204) throw Exception('No se, ta mal');
+  }
 }

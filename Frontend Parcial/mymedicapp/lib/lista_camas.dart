@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'api_service.dart';
 import 'creacion.dart';
 import 'list_view.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +10,10 @@ class ListaCamas extends StatefulWidget {
 }
 
 class _ListaCamasState extends State<ListaCamas> {
+  actualizar() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class _ListaCamasState extends State<ListaCamas> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CrearCama()),
-          );
+          ).then((value) => actualizar());
         },
         child: Icon(Icons.add),
       ),

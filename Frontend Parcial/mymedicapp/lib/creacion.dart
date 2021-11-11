@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'cama.dart';
 import 'api_service.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +107,8 @@ class _CrearCamaState extends State<CrearCama> {
                           idPiso: int.parse(_piso.text.toString()),
                           idPaciente: _idPaciente.text.toString(),
                           nombre: _nombrePaciente.text.toString(),
-                          fechaIngreso: DateTime.now().toString(),
+                          fechaIngreso: DateFormat('dd-MM-yyyy - kk:mm')
+                              .format(DateTime.now()),
                           diagnostico: _diagnostico.text.toString(),
                         );
                         apiService.postCama(newCama);
