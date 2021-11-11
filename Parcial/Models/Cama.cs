@@ -12,7 +12,7 @@ namespace Parcial.Models
         [Key]
         public int IdCama { get; set; }
         [Required]
-        public bool Estado { get; set; }
+        public int Estado { get; set; }
         [Required]
         public int IdPiso { get; set; }
 

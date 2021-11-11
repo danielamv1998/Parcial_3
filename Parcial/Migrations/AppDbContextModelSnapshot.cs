@@ -29,8 +29,8 @@ namespace Parcial.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Estado")
-                        .HasColumnType("bit");
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
 
                     b.Property<string>("FechaHoraIngreso")
                         .IsRequired()
