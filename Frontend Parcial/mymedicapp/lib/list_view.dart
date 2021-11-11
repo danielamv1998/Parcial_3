@@ -1,9 +1,8 @@
-import 'dart:js';
-
 import 'api_service.dart';
 import 'package:flutter/material.dart';
 import 'cama.dart';
 
+// ignore: must_be_immutable
 class CamaListView extends StatelessWidget {
   ApiService apiService = ApiService();
 
@@ -13,25 +12,59 @@ class CamaListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ListTile _tile() {
+    ListTile _tile(int idCama, int estado, int idPiso, String idPaciente,
+        String nombre, String fechaHoraIngreso, String diagnostico) {
       return ListTile(
-        title: Text('Cama'),
-        subtitle: Text('Cama'),
-        leading: Icon(Icons.add),
+        title: Text(
+          estado == 0 ? 'Cama $idCama libre' : 'Cama $idCama ocupada',
+          style: TextStyle(fontSize: 20),
+        ),
+        subtitle: Text('IDP: $idPaciente'),
+        leading: Icon(
+          Icons.airline_seat_individual_suite_rounded,
+          color: estado == 0 ? Colors.green : Colors.red,
+        ),
+        isThreeLine: true,
         onTap: () {},
       );
     }
-    return null;
-  }
 
-  ListView _camaListView(data) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return _tile(
-          data[index]
-        )
+    ListView _camasListView(data) {
+      if (data.length == 0) {
+        return ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text('No hay camas disponibles'),
+              subtitle: Text('Por favor, registra una para empezar'),
+            )
+          ],
+        );
       }
+      return ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return _tile(
+            data.elementAt(index).idCama,
+            data.elementAt(index).estado,
+            data.elementAt(index).idPiso,
+            data.elementAt(index).idPaciente,
+            data.elementAt(index).nombre,
+            data.elementAt(index).fechaIngreso,
+            data.elementAt(index).diagnostico,
+          );
+        },
+      );
+    }
+
+    return FutureBuilder<List<Cama>>(
+      future: apiService.getCamas(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Cama>? data = snapshot.data;
+          return _camasListView(data);
+        }
+        return CircularProgressIndicator();
+      },
     );
   }
 }

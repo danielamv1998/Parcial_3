@@ -16,21 +16,6 @@ class ApiService {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
 
-      for (var item in jsonResponse) {
-        print('===CAMA===');
-        print('ID CAMA: ' + item['idCama'].toString());
-        print('ESTADO: ' + item['estado'].toString());
-        print('ID PISO: ' + item['idPiso'].toString());
-        if (item['idPaciente'].toString().isNotEmpty ||
-            item['idPaciente'] != '') {
-          print('===PACIENTE===');
-          print('PACIENTE: ' + item['idPaciente'].toString());
-          print('NOMBRE: ' + item['nombre'].toString());
-          print('FECHA: ' + item['fechaHoraIngreso'].toString());
-          print('DIAGNOSTICO: ' + item['diagnostico'].toString());
-        }
-      }
-
       return (jsonResponse as List)
           .map((data) => new Cama.fromJson(data))
           .toList();
@@ -38,9 +23,58 @@ class ApiService {
 
     throw Exception('No se, ta mal');
   }
+
   // GET id FUNCTION
+  Future<Cama> getCama(int id) async {
+    var response = await http.get(Uri.parse(url + '/$id'), headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    });
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+
+      print('DATOS');
+      print(jsonResponse['id']);
+      print(jsonResponse['estado']);
+
+      return new Cama.fromJson(jsonResponse);
+    }
+
+    throw Exception('No se, ta mal');
+  }
 
   // POST FUNCTION
+  Future<void> postCama(Cama cama) async {
+    Map data = {
+      "idCama": 0,
+      "estado": cama.estado,
+      "idPiso": cama.idPiso,
+      "idPaciente": cama.idPaciente,
+      "nombre": cama.nombre,
+      "fechaHoraIngreso": cama.fechaIngreso,
+      "diagnostico": cama.diagnostico,
+    };
+
+    print(jsonEncode(data));
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        //"Accept": "text/plain",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(data),
+    );
+
+    print('STATUS CODE: ${response.statusCode}');
+    print('BODY: \n${response.body}');
+    if (response.statusCode == 201)
+      print('xd');
+    //return Cama.fromJson(json.decode(response.body));
+    else
+      throw Exception('No se, ta mal');
+  }
 
   // PUT FUNCTION
 

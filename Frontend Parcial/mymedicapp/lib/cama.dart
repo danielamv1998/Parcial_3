@@ -1,6 +1,6 @@
 class Cama {
   int? idCama;
-  bool? estado;
+  int? estado; //0 libre, 1 ocupada
   int? idPiso;
   String? idPaciente;
   String? nombre;

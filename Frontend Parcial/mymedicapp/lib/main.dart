@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
+import 'lista_camas.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,10 +47,14 @@ class _InicioState extends State<Inicio> {
               height: 50.0,
             ),
             ElevatedButton(
-                onPressed: () {
-                  apiService.getCamas();
-                },
-                child: Text('Obtener datos')),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListaCamas()),
+                );
+              },
+              child: Text('Obtener datos'),
+            ),
           ],
         ),
       ),
